@@ -38,10 +38,15 @@ class MainActivity : ComponentActivity() {
                 var users by remember { mutableStateOf(listOf<User>()) }
 
                 LaunchedEffect(Unit) {
-                    users = getUsers()
-
-                    val singleUser = getUser("1")
-                    Log.d("USER_DETAIL", singleUser.toString())
+                    try {
+                        users = getUsers()
+                        val singleUser = getUser("1")
+                        singleUser.let { Log.d("USER_DETAIL", it.toString()) }
+                    } catch (e: retrofit2.HttpException) {
+                        Log.e("API_ERROR", "HTTP error ${e.code()} ${e.message()}")
+                    } catch (e: Exception) {
+                        Log.e("API_ERROR", "Other error: $e")
+                    }
                 }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -52,8 +57,14 @@ class MainActivity : ComponentActivity() {
 
                         onAddUser = {
                             lifecycleScope.launch {
-                                createUser()
-                                users = getUsers()
+                                try {
+                                    createUser()
+                                    users = getUsers()
+                                } catch (e: retrofit2.HttpException) {
+                                    Log.e("API_ERROR", "HTTP error ${e.code()} ${e.message()}")
+                                } catch (e: Exception) {
+                                    Log.e("API_ERROR", "Other error: $e")
+                                }
                             }
                         },
 
