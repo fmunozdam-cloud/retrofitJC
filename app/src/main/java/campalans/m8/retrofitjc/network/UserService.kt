@@ -1,7 +1,13 @@
-package campalans.m8.retrofitjc
+package campalans.m8.retrofitjc.network
 
+import campalans.m8.retrofitjc.model.User
+import campalans.m8.retrofitjc.model.UserResponse
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface UserService {
 

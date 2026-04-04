@@ -10,7 +10,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import campalans.m8.retrofitjc.ui.MainView
+import campalans.m8.retrofitjc.model.User
+import campalans.m8.retrofitjc.network.UserService
+import campalans.m8.retrofitjc.ui.theme.MainView
 import campalans.m8.retrofitjc.ui.theme.RetrofitJCTheme
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit

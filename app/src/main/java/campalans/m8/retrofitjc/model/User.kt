@@ -1,4 +1,4 @@
-package campalans.m8.retrofitjc
+package campalans.m8.retrofitjc.model
 
 data class User(
     val id: Int? = null,

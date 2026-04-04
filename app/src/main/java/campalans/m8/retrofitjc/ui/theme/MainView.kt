@@ -1,4 +1,4 @@
-package campalans.m8.retrofitjc
+package campalans.m8.retrofitjc.ui.theme
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import campalans.m8.retrofitjc.model.User
 
 
 @Composable
