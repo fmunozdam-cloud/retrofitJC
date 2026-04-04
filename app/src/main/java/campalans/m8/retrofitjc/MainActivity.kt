@@ -71,9 +71,9 @@ class MainActivity : ComponentActivity() {
 
     private suspend fun createUser() {
         val newUser = User(
-            first_name = "Nuevo",
-            last_name = "Usuario",
-            email = "nuevo@email.com"
+            first_name = "Nou",
+            last_name = "Usuari",
+            email = "nou@email.com"
         )
         service.createUser(newUser)
     }

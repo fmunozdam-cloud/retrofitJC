@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import campalans.m8.retrofitjc.model.User
 
 
@@ -13,7 +14,8 @@ import campalans.m8.retrofitjc.model.User
 fun MainView(
     users: List<User>,
     onAddUser: () -> Unit,
-    onDeleteUser: (Int) -> Unit
+    onDeleteUser: (Int) -> Unit,
+    modifier: Modifier
 ) {
 
     Column {
