@@ -15,7 +15,7 @@ interface UserService {
     suspend fun getUsers(): UserResponse
 
     @GET("users/{id}")
-    suspend fun getUser(@Path("id") id: Int): UserResponse
+    suspend fun getUser(@Path("id") id: String): UserResponse
 
     @POST("users")
     suspend fun createUser(@Body user: User): Response<User>

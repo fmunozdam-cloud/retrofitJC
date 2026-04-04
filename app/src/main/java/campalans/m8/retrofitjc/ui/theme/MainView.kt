@@ -15,13 +15,13 @@ fun MainView(
     users: List<User>,
     onAddUser: () -> Unit,
     onDeleteUser: (Int) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
 
-    Column {
+    Column (modifier = modifier) {
 
         Button(onClick = onAddUser) {
-            Text("Crear usuario")
+            Text("Crear usuari")
         }
 
         LazyColumn {

@@ -1,6 +1,7 @@
 package campalans.m8.retrofitjc
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -38,6 +39,9 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     users = getUsers()
+
+                    val singleUser = getUser("1")
+                    Log.d("USER_DETAIL", singleUser.toString())
                 }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -67,6 +71,10 @@ class MainActivity : ComponentActivity() {
 
     private suspend fun getUsers(): List<User> {
         return service.getUsers().data
+    }
+
+    private suspend fun getUser(id: String): User {
+        return service.getUser(id).data.first()
     }
 
     private suspend fun createUser() {
