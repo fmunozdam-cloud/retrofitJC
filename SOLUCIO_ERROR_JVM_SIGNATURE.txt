@@ -1,0 +1,33 @@
+SOLUCIÓN ERROR JVM SIGNATURE CLASH
+
+PROBLEMA:
+Platform declaration clash: The following declarations have the same JVM signature (getEmail()Ljava/lang/String;):
+- fun `<get-email>`(): String? defined in campalans.m8.retrofitjc.model.User
+- fun getEmail(): String defined in campalans.m8.retrofitjc.model.User
+
+CAUSA:
+En Kotlin, cuando tienes una propiedad `val email: String?`, automáticamente se genera un getter llamado `getEmail()`.
+Si también defines una función con el mismo nombre `fun getEmail(): String`, hay un conflicto de JVM signatures.
+
+SOLUCIÓN:
+Cambiar el nombre de la función para evitar el conflicto.
+
+CAMBIOS REALIZADOS:
+
+User.kt:
+- fun getEmail(): String → fun getEmailAddress(): String
+
+Ahora no hay conflicto porque:
+- La propiedad `email` genera: `getEmail(): String?`
+- La función se llama: `getEmailAddress(): String`
+
+COMPILACIÓN:
+Ahora debería compilar sin errores.
+
+NOTA:
+Este tipo de errores ocurren cuando mezclas propiedades y funciones con nombres similares.
+En Kotlin, las propiedades generan automáticamente getters/setters con el patrón `getPropertyName()`.
+
+PREVENCIÓN:
+- Evitar funciones con nombres que empiecen con "get" + nombre de propiedad
+- O usar nombres diferentes para las funciones helper

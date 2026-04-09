@@ -1,0 +1,64 @@
+SOLUCIÓN ERROR HTTP 401 - RetrofitJC
+
+PROBLEMA:
+La aplicación estaba lanzando un error HTTP 401 (Unauthorized) al intentar conectarse a la API de reqres.in.
+
+CAUSAS IDENTIFICADAS:
+1. OkHttpClient no estaba configurado correctamente
+2. No había logging para debugar las llamadas HTTP
+3. Los timeouts no estaban configurados
+4. No había interceptores para manejar headers
+
+SOLUCIÓN APLICADA:
+
+1. Se modificó UserViewModel.kt:
+   - Se agregó OkHttpClient personalizado
+   - Se añadió HttpLoggingInterceptor para ver los detalles de las llamadas
+   - Se configuraron timeouts (15 segundos para conectar y leer)
+   - Se pasó el OkHttpClient a Retrofit.Builder()
+
+2. Se agregó la dependencia en build.gradle.kts:
+   - implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+CAMBIOS EN EL CÓDIGO:
+
+UserViewModel.kt:
+- Añadido método createOkHttpClient()
+- Configurado HttpLoggingInterceptor con nivel BODY
+- Seteados timeouts de 15 segundos
+- Pasado el cliente a Retrofit.Builder().client()
+
+build.gradle.kts:
+- Agregada dependencia del logging interceptor de OkHttp
+
+PASOS SIGUIENTES:
+
+1. Sincronizar Gradle:
+   Android Studio → Sync Now
+
+2. Limpiar caché:
+   Build → Clean Project
+
+3. Ejecutar de nuevo:
+   Shift + F10
+
+4. Verificar Logcat:
+   Buscar "HTTP" para ver las llamadas HTTP completas
+
+DEBUGGING:
+Con el HttpLoggingInterceptor activado, en Logcat verás:
+- Headers de la petición
+- Body de la petición
+- Headers de la respuesta
+- Body de la respuesta
+- Códigos de error detallados
+
+Esto te ayudará a ver exactamente qué está pasando en la comunicación con la API.
+
+REQUISITOS:
+- Sincronizar Gradle después de cambiar las dependencias
+- Limpiar el build anterior
+- Compilar de nuevo
+
+Si sigue habiendo error 401, verás exactamente qué headers se están enviando en el Logcat.
+

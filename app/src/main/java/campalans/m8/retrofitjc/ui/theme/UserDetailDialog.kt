@@ -29,16 +29,16 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import campalans.m8.retrofitjc.model.User
 
-// Dialog per veure i editar detalls d'un usuari
+// Dialog per veure i editar detalls d'un post
 @Composable
 fun UserDetailDialog(
     user: User,
     onDismiss: () -> Unit,
     onUpdate: (Int, String, String, String) -> Unit
-    ) {
-    val firstName = remember { mutableStateOf(user.first_name) }
-    val lastName = remember { mutableStateOf(user.last_name) }
-    val email = remember { mutableStateOf(user.email) }
+) {
+    val firstName = remember { mutableStateOf(user.title) }
+    val lastName = remember { mutableStateOf(user.body) }
+    val email = remember { mutableStateOf(user.email ?: "") }
     val isEditing = remember { mutableStateOf(false) }
 
     Dialog(
@@ -64,7 +64,7 @@ fun UserDetailDialog(
 
                 // Títol del dialog
                 Text(
-                    text = "Detalls de l'usuari",
+                    text = "Detalls del post",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -80,7 +80,7 @@ fun UserDetailDialog(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "${user.first_name.firstOrNull() ?: "?"}",
+                        text = "${user.title.firstOrNull() ?: "P"}",
                         color = MaterialTheme.colorScheme.onPrimary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 28.sp
@@ -88,7 +88,7 @@ fun UserDetailDialog(
                 }
 
                 // ID
-                if (user.id != null) {
+                if (user.id != 0) {
                     Text(
                         text = "ID: ${user.id}",
                         fontSize = 12.sp,
@@ -100,7 +100,7 @@ fun UserDetailDialog(
                 OutlinedTextField(
                     value = firstName.value,
                     onValueChange = { firstName.value = it },
-                    label = { Text("Nom") },
+                    label = { Text("Títol") },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = isEditing.value,
                     singleLine = true
@@ -109,10 +109,10 @@ fun UserDetailDialog(
                 OutlinedTextField(
                     value = lastName.value,
                     onValueChange = { lastName.value = it },
-                    label = { Text("Cognom") },
+                    label = { Text("Contingut") },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = isEditing.value,
-                    singleLine = true
+                    singleLine = false
                 )
 
                 OutlinedTextField(

@@ -9,8 +9,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 // ViewModel per gestionar la lògica dels usuaris
 class UserViewModel : ViewModel() {
@@ -19,6 +22,7 @@ class UserViewModel : ViewModel() {
     private val retrofit = Retrofit.Builder()
         .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
+        .client(createOkHttpClient())
         .build()
 
     // Servei de la API
@@ -45,15 +49,26 @@ class UserViewModel : ViewModel() {
         loadUsers()
     }
 
+    // Crea un client OkHttp amb logging per debugar
+    private fun createOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .build()
+    }
+
     // Obté tots els usuaris de la API
     fun loadUsers() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 val response = service.getUsers()
-                _users.value = response.data
+                _users.value = response
                 _errorMessage.value = null
-                Log.d("UserViewModel", "Usuaris carregats: ${response.data.size}")
+                Log.d("UserViewModel", "Usuaris carregats: ${response.size}")
             } catch (e: Exception) {
                 _errorMessage.value = "Error al carregar usuaris: ${e.message}"
                 Log.e("UserViewModel", "Error loading users", e)
@@ -68,12 +83,8 @@ class UserViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = service.getUser(id)
-                if (response.data.isNotEmpty()) {
-                    _selectedUser.value = response.data.first()
-                } else {
-                    _errorMessage.value = "Usuari no trobat"
-                }
-                Log.d("UserViewModel", "Usuari obtingut: ${response.data}")
+                _selectedUser.value = response
+                Log.d("UserViewModel", "Usuari obtingut: $response")
             } catch (e: Exception) {
                 _errorMessage.value = "Error al obtenir usuari: ${e.message}"
                 Log.e("UserViewModel", "Error getting user", e)
@@ -87,6 +98,9 @@ class UserViewModel : ViewModel() {
             _isLoading.value = true
             try {
                 val newUser = User(
+                    id = 0,
+                    title = firstName,
+                    body = lastName,
                     first_name = firstName,
                     last_name = lastName,
                     email = email
@@ -115,6 +129,8 @@ class UserViewModel : ViewModel() {
             try {
                 val updatedUser = User(
                     id = id,
+                    title = firstName,
+                    body = lastName,
                     first_name = firstName,
                     last_name = lastName,
                     email = email

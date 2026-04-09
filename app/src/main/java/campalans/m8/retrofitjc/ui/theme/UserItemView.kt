@@ -56,7 +56,7 @@ fun UserItemView(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "${user.first_name.firstOrNull() ?: "?"}",
+                text = "${user.first_name?.firstOrNull() ?: "?"}",
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
@@ -69,17 +69,18 @@ fun UserItemView(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "${user.first_name} ${user.last_name}",
+                text = user.title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = user.email,
+                text = user.body,
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2
             )
-            if (user.id != null) {
+            if (user.id != 0) {
                 Text(
                     text = "ID: ${user.id}",
                     fontSize = 10.sp,

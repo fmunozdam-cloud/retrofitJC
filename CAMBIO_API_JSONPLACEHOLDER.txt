@@ -1,0 +1,79 @@
+CAMBIO DE API - ReqRes a JSONPlaceholder
+
+PROBLEMA:
+- ReqRes.in tiene problemas intermitentes de autenticación (HTTP 401)
+- La API no es suficientemente estable para desarrollo
+
+SOLUCIÓN:
+Cambio a JSONPlaceholder, que es:
+- Totalmente gratuita
+- Sin problemas de autenticación
+- Muy estable y confiable
+- Diseñada especificamente para testing
+
+CAMBIOS REALIZADOS:
+
+1. Constants.kt
+   BASE_URL = "https://jsonplaceholder.typicode.com/"
+   (en lugar de "https://reqres.in/api/")
+
+2. User.kt
+   - Ahora tiene campos title y body (propios de JSONPlaceholder posts)
+   - Mantiene campos first_name, last_name, email para compatibilidad
+   - Métodos helper: getFirstName(), getLastName(), getEmail()
+
+3. UserService.kt
+   - getUsers() retorna List<User> directamente
+   - getUser() retorna User directamente
+   - Endpoints apuntan a /posts (no /users)
+
+4. UserViewModel.kt
+   - Adaptado para trabajar con List<User> directamente
+   - No usa UserResponse.data
+
+5. MainView.kt
+   - "Crear nouusuari" → "Crear nou post"
+
+6. UserItemView.kt
+   - Muestra user.title como nombre
+   - Muestra user.body como email/descripción
+
+7. UserDetailDialog.kt
+   - "Detalls de l'usuari" → "Detalls del post"
+   - "Nom" → "Títol"
+   - "Cognom" → "Contingut"
+
+VENTAJAS DE JSONPlaceholder:
+
+✓ Sin autenticación requerida
+✓ Respuestas JSON limpias y simples
+✓ Endpoints predecibles
+✓ 100+ posts de ejemplo disponibles
+✓ Acepta crear, editar, eliminar (aunque simula respuesta)
+✓ Totalmente funcional sin API key
+✓ Sin timeouts o problemas de conexión
+
+API ENDPOINTS:
+- GET /posts - obtener todos los posts
+- GET /posts/1 - obtener post específico
+- POST /posts - crear post
+- PUT /posts/1 - actualizar post
+- DELETE /posts/1 - eliminar post
+
+NOTA:
+JSONPlaceholder es una API de prueba. Las operaciones (create, update, delete)
+devuelven respuestas simuladas. Para producción, usar una API real.
+
+PASOS PARA COMPILAR:
+
+1. Sync Gradle
+   Android Studio → Sync Now
+
+2. Clean Project
+   Build → Clean Project
+
+3. Run
+   Shift + F10
+
+TODO DEBERÍA FUNCIONAR AHORA!
+

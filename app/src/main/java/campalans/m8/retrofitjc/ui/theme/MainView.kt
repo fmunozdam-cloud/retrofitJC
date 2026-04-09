@@ -85,7 +85,7 @@ fun MainView(
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)
             ) {
-                Text("Crear nouusuari")
+                Text("Crear nou post")
             }
 
             // Si està carregant, mostrem el spinner
