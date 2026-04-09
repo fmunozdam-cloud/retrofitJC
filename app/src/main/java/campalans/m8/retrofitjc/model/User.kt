@@ -1,5 +1,6 @@
 package campalans.m8.retrofitjc.model
 
+// Model que representa un usuari
 data class User(
     val id: Int? = null,
     val first_name: String,

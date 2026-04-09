@@ -1,0 +1,51 @@
+COMENTARIOS AGREGADOS AL CÓDIGO - RetrofitJC v2.0
+
+Se han agregado comentarios en catalán resumidos y naturales en los archivos principales:
+
+1. UserViewModel.kt
+   - Comentario general de la clase
+   - Comentarios para cada propiedad StateFlow
+   - Comentarios para cada función CRUD (loadUsers, getUser, createUser, updateUser, deleteUser)
+   - Comentarios para funciones de limpieza (clearError, clearSelectedUser)
+
+2. MainActivity.kt
+   - Comentario general de la Activity
+   - Comentario sobre la creación del ViewModel
+   - Comentario sobre observar los estados reactivos
+   - Comentario sobre pasar datos y callbacks
+
+3. UserService.kt
+   - Comentario general del interface
+   - Comentario para cada endpoint (GET, POST, PUT, DELETE)
+
+4. Constants.kt
+   - Comentario sobre constantes globales
+   - Comentario sobre la URL de la API
+
+5. User.kt
+   - Comentario descriptivo del modelo
+
+6. UserResponse.kt
+   - Comentario sobre la estructura de respuesta
+
+7. MainView.kt
+   - Comentario general de la función
+   - Comentarios para título, botón, spinner
+   - Comentarios para lista de usuarios
+   - Comentario para el dialog
+
+8. UserItemView.kt
+   - Comentario general del elemento
+   - Comentarios para avatar, info y botons d'acció
+
+9. UserDetailDialog.kt
+   - Comentario general del dialog
+   - Comentarios para título, avatar, campos y botons
+
+CARACTERÍSTICAS DE LOS COMENTARIOS:
+- Todos en catalán
+- Resumidos y naturales (como escritos por un estudiante)
+- Sin emojis
+- Claros y directos
+- Explicando qué hace cada parte del código
+

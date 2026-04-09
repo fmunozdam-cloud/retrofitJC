@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="/Constants (snapshot).kt">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/Constants (snapshot).kt" />
+              <option name="originalContent" value="package campalans.m8.retrofitjc&#10;&#10;/**&#10; * Objeto con constantes globales de la aplicación.&#10; * &#10; * BASE_URL: URL base de la API&#10; * Se puede cambiar para apuntar a un servidor diferente&#10; */&#10;object Constants {&#10;    // API de prueba reqres.in - devuelve datos simulados de usuarios&#10;    const val BASE_URL = &quot;https://reqres.in/api/&quot;&#10;}" />
+              <option name="updatedContent" value="package campalans.m8.retrofitjc&#10;&#10;// Constants globals&#10;object Constants {&#10;    // URL de l'API&#10;    const val BASE_URL = &quot;https://reqres.in/api/&quot;&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
