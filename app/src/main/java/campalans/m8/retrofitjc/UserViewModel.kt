@@ -32,6 +32,9 @@ class UserViewModel : ViewModel() {
     private val _users = MutableStateFlow<List<User>>(emptyList())
     val users: StateFlow<List<User>> = _users.asStateFlow()
 
+    // Llista local per simular persistència (ja que JSONPlaceholder no guarda realment)
+    private var localUsers = mutableListOf<User>()
+
     // Usuari seleccionat per veure detalls
     private val _selectedUser = MutableStateFlow<User?>(null)
     val selectedUser: StateFlow<User?> = _selectedUser.asStateFlow()
@@ -67,6 +70,8 @@ class UserViewModel : ViewModel() {
             try {
                 val response = service.getUsers()
                 _users.value = response
+                localUsers.clear()
+                localUsers.addAll(response)
                 _errorMessage.value = null
                 Log.d("UserViewModel", "Usuaris carregats: ${response.size}")
             } catch (e: Exception) {
@@ -97,20 +102,30 @@ class UserViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                // Crear usuari local amb ID temporal
+                val tempId = (localUsers.maxOfOrNull { it.id } ?: 0) + 1
                 val newUser = User(
-                    id = 0,
+                    id = tempId,
                     title = firstName,
                     body = lastName,
                     first_name = firstName,
                     last_name = lastName,
                     email = email
                 )
+
+                // Afegir a la llista local immediatament
+                localUsers.add(0, newUser) // Afegir al principi
+                _users.value = localUsers.toList()
+
+                // Enviar a l'API (simulat)
                 val response = service.createUser(newUser)
                 if (response.isSuccessful) {
                     _errorMessage.value = null
-                    loadUsers()
-                    Log.d("UserViewModel", "Usuari creat: ${response.body()}")
+                    Log.d("UserViewModel", "Usuari creat localment: $tempId")
                 } else {
+                    // Si falla, revertir el canvi local
+                    localUsers.remove(newUser)
+                    _users.value = localUsers.toList()
                     _errorMessage.value = "Error al crear usuari: ${response.code()}"
                 }
             } catch (e: Exception) {
@@ -135,13 +150,23 @@ class UserViewModel : ViewModel() {
                     last_name = lastName,
                     email = email
                 )
+
+                // Actualitzar localment immediatament
+                val index = localUsers.indexOfFirst { it.id == id }
+                if (index != -1) {
+                    localUsers[index] = updatedUser
+                    _users.value = localUsers.toList()
+                }
+
+                // Enviar a l'API (simulat)
                 val response = service.updateUser(id, updatedUser)
                 if (response.isSuccessful) {
                     _errorMessage.value = null
-                    loadUsers()
                     _selectedUser.value = null
-                    Log.d("UserViewModel", "Usuari actualitzat: ${response.body()}")
+                    Log.d("UserViewModel", "Usuari actualitzat localment: $id")
                 } else {
+                    // Si falla, revertir el canvi local
+                    loadUsers() // Recarregar des de l'API
                     _errorMessage.value = "Error al actualitzar usuari: ${response.code()}"
                 }
             } catch (e: Exception) {
@@ -158,12 +183,21 @@ class UserViewModel : ViewModel() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                // Eliminar localment immediatament
+                val userToRemove = localUsers.find { it.id == id }
+                if (userToRemove != null) {
+                    localUsers.remove(userToRemove)
+                    _users.value = localUsers.toList()
+                }
+
+                // Enviar a l'API (simulat)
                 val response = service.deleteUser(id)
                 if (response.isSuccessful) {
                     _errorMessage.value = null
-                    loadUsers()
-                    Log.d("UserViewModel", "Usuari eliminat: $id")
+                    Log.d("UserViewModel", "Usuari eliminat localment: $id")
                 } else {
+                    // Si falla, revertir el canvi local
+                    loadUsers() // Recarregar des de l'API
                     _errorMessage.value = "Error al eliminar usuari: ${response.code()}"
                 }
             } catch (e: Exception) {
@@ -185,4 +219,3 @@ class UserViewModel : ViewModel() {
         _selectedUser.value = null
     }
 }
-

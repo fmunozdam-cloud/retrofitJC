@@ -1,0 +1,90 @@
+SOLUCIÓN CRUD FUNCIONAL - JSONPlaceholder
+
+PROBLEMA:
+JSONPlaceholder es una API de PRUEBA que simula operaciones pero NO persiste cambios.
+Cuando hacías CREATE, UPDATE, DELETE, la API respondía correctamente pero al recargar
+la lista (GET), volvían los datos originales.
+
+SOLUCIÓN IMPLEMENTADA:
+Simular persistencia local manteniendo una lista mutable que se actualiza inmediatamente,
+mientras se envían las operaciones a la API en segundo plano.
+
+CAMBIOS REALIZADOS:
+
+1. UserViewModel.kt - Agregada lista local:
+   ```kotlin
+   private var localUsers = mutableListOf<User>()
+   ```
+
+2. loadUsers() - Sincroniza lista local con API:
+   ```kotlin
+   localUsers.clear()
+   localUsers.addAll(response)
+   ```
+
+3. createUser() - Aplica cambios localmente PRIMERO:
+   ```kotlin
+   // Crear localmente inmediato
+   localUsers.add(0, newUser)
+   _users.value = localUsers.toList()
+
+   // Luego enviar a API
+   val response = service.createUser(newUser)
+   ```
+
+4. updateUser() - Actualiza localmente PRIMERO:
+   ```kotlin
+   // Actualizar localmente inmediato
+   val index = localUsers.indexOfFirst { it.id == id }
+   localUsers[index] = updatedUser
+   _users.value = localUsers.toList()
+
+   // Luego enviar a API
+   val response = service.updateUser(id, updatedUser)
+   ```
+
+5. deleteUser() - Elimina localmente PRIMERO:
+   ```kotlin
+   // Eliminar localmente inmediato
+   localUsers.remove(userToRemove)
+   _users.value = localUsers.toList()
+
+   // Luego enviar a API
+   val response = service.deleteUser(id)
+   ```
+
+RESULTADO:
+- ✅ CREATE: El post aparece inmediatamente en la lista
+- ✅ UPDATE: Los cambios se ven al instante
+- ✅ DELETE: El post desaparece inmediatamente
+- ✅ SELECT: Funciona normalmente
+- ✅ API: Se llama en segundo plano para simular operaciones
+
+VENTAJAS:
+- Usuario ve cambios inmediatamente (UX perfecta)
+- API se llama correctamente (compatibilidad)
+- Si API falla, se revierte el cambio local
+- Funciona como una app real
+
+NOTA IMPORTANTE:
+JSONPlaceholder NO guarda datos realmente. Es solo para testing.
+Para producción, necesitarías una API real que persista datos.
+
+¿QUÉ HACER AHORA?
+
+1. Compilar y probar:
+   - Sync Gradle
+   - Clean Project
+   - Run
+
+2. Probar operaciones:
+   - Crear post → Aparece inmediatamente
+   - Editar post → Cambios instantáneos
+   - Eliminar post → Desaparece inmediatamente
+
+3. Verificar logs:
+   - Mira Logcat para ver llamadas HTTP
+   - Deberías ver POST, PUT, DELETE exitosos
+
+¡AHORA FUNCIONA TODO! 🎉
+

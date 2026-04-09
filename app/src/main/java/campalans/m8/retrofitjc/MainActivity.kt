@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                         isLoading = isLoading,
                         errorMessage = errorMessage,
                         onAddUser = {
-                            userViewModel.createUser("Novo", "Usuario", "novo@example.com")
+                            userViewModel.createUser("Nou Post", "Contingut del post", "email@example.com")
                         },
                         onDeleteUser = { id ->
                             userViewModel.deleteUser(id)
